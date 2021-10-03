@@ -1,6 +1,6 @@
 ## gRPC vs Rest
 
-You can view the site live [live](https://freshlist.us) to view the code running in production.
+You can view the site [live](https://freshlist.us) to view the code running in production.
 
 At this moment, the project is very young, and not finished. The production site will be changing rapidly as development ensues.
 
@@ -31,6 +31,9 @@ For more details see [GitHub Flavored Markdown](https://guides.github.com/featur
 ### Contributors
 
 Huge thank you to all who have contributed to this project!
+
+Names:
+
 
 ### Support or Contact
 
