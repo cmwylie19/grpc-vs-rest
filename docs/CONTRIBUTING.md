@@ -1,6 +1,6 @@
 # gRPC vs REST contributing guide <!-- omit in toc -->
 
-Thank you for investing your time in contributing to our project! Any contribution you make will be reflected on [docs.github.com](https://docs.github.com/en) :sparkles:. 
+Thank you for investing your time in contributing to our project! Any contribution you make will be reflected on [https://cmwylie19.github.io/grpc-vs-rest/](https://cmwylie19.github.io/grpc-vs-rest/) :sparkles:. 
 
 Read our [Code of Coduct](./CODE_OF_CONDUCT.md) to keep our community approachable and respectable.
 

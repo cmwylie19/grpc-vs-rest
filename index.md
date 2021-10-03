@@ -1,10 +1,10 @@
-## Welcome to GitHub Pages
+## gRPC vs Rest
 
-You can use the [editor on GitHub](https://github.com/cmwylie19/grpc-vs-rest/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+You can view the site live [live](https://freshlist.us) to view the code running in production.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+At this moment, the project is very young, and not finished. The production site will be changing rapidly as development ensues.
 
-### Markdown
+<!-- ### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
@@ -26,12 +26,12 @@ Syntax highlighted code block
 [Link](url) and ![Image](src)
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/). -->
 
-### Jekyll Themes
+### Contributors
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/cmwylie19/grpc-vs-rest/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Huge thank you to all who have contributed to this project!
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Having trouble with this application? Check out the [README.md](https://github.com/cmwylie19/grpc-vs-rest/blob/main/README.md) or file an [issue](https://github.com/cmwylie19/grpc-vs-rest/issues), or [email me](mailto:casewylie@gmail.com?subject=grpcvsrest hacktoberfest) and we’ll help you sort it out.

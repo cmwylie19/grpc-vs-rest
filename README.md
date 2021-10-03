@@ -1,11 +1,17 @@
 # grpc-vs-rest
 
+* [Contributing](#contributing)
 * [Project Overview](#project-overview)
   * [Architecture](#architecture)
 * [Code Base](#code-base)
 * [Prerequisites](#prerequisites)
 * [Local Development](#local-development)
 * [Pipeline](#pipeline)
+
+## Contributing
+Anyone can contribute to this project, read the [CONTRIBUTING.md](docs/CONTRIBUTING.md) to get started.
+   
+
 
 ## Project Overview
 _This project contains a front and backend that run in Istio. The frontend requests data from the backend through REST and gRPC to show the differences in efficiency and load time to the end user. It is for education purposes in nature. The frontend is a react app that uses gRPC web and axios. The backend is a golang application that exposes a gRPC port and a REST port._
