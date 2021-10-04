@@ -305,5 +305,85 @@ proto.images.ImagePromiseClient.prototype.getImagesUnary =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.images.HealthCheckRequest,
+ *   !proto.images.HealthCheckResponse>}
+ */
+const methodDescriptor_Image_HealthCheck = new grpc.web.MethodDescriptor(
+  '/images.Image/HealthCheck',
+  grpc.web.MethodType.UNARY,
+  proto.images.HealthCheckRequest,
+  proto.images.HealthCheckResponse,
+  /**
+   * @param {!proto.images.HealthCheckRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.images.HealthCheckResponse.deserializeBinary
+);
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.images.HealthCheckRequest,
+ *   !proto.images.HealthCheckResponse>}
+ */
+const methodInfo_Image_HealthCheck = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.images.HealthCheckResponse,
+  /**
+   * @param {!proto.images.HealthCheckRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.images.HealthCheckResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.images.HealthCheckRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.images.HealthCheckResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.images.HealthCheckResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.images.ImageClient.prototype.healthCheck =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/images.Image/HealthCheck',
+      request,
+      metadata || {},
+      methodDescriptor_Image_HealthCheck,
+      callback);
+};
+
+
+/**
+ * @param {!proto.images.HealthCheckRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.images.HealthCheckResponse>}
+ *     Promise that resolves to the response
+ */
+proto.images.ImagePromiseClient.prototype.healthCheck =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/images.Image/HealthCheck',
+      request,
+      metadata || {},
+      methodDescriptor_Image_HealthCheck);
+};
+
+
 module.exports = proto.images;
 
