@@ -21,6 +21,7 @@ type ImageClient interface {
 	GetImagesStream(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (Image_GetImagesStreamClient, error)
 	GetImageUnary(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error)
 	GetImagesUnary(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImagesResponse, error)
+	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
 }
 
 type imageClient struct {
@@ -81,6 +82,15 @@ func (c *imageClient) GetImagesUnary(ctx context.Context, in *ImageRequest, opts
 	return out, nil
 }
 
+func (c *imageClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
+	out := new(HealthCheckResponse)
+	err := c.cc.Invoke(ctx, "/images.Image/HealthCheck", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImageServer is the server API for Image service.
 // All implementations must embed UnimplementedImageServer
 // for forward compatibility
@@ -88,6 +98,7 @@ type ImageServer interface {
 	GetImagesStream(*ImageRequest, Image_GetImagesStreamServer) error
 	GetImageUnary(context.Context, *ImageRequest) (*ImageResponse, error)
 	GetImagesUnary(context.Context, *ImageRequest) (*ImagesResponse, error)
+	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
 	mustEmbedUnimplementedImageServer()
 }
 
@@ -103,6 +114,9 @@ func (UnimplementedImageServer) GetImageUnary(context.Context, *ImageRequest) (*
 }
 func (UnimplementedImageServer) GetImagesUnary(context.Context, *ImageRequest) (*ImagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetImagesUnary not implemented")
+}
+func (UnimplementedImageServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
 }
 func (UnimplementedImageServer) mustEmbedUnimplementedImageServer() {}
 
@@ -174,6 +188,24 @@ func _Image_GetImagesUnary_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Image_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HealthCheckRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImageServer).HealthCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/images.Image/HealthCheck",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImageServer).HealthCheck(ctx, req.(*HealthCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Image_ServiceDesc is the grpc.ServiceDesc for Image service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -188,6 +220,10 @@ var Image_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetImagesUnary",
 			Handler:    _Image_GetImagesUnary_Handler,
+		},
+		{
+			MethodName: "HealthCheck",
+			Handler:    _Image_HealthCheck_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
