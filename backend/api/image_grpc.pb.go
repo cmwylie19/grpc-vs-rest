@@ -19,7 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ImageClient interface {
 	GetImagesStream(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (Image_GetImagesStreamClient, error)
-	GetImagesUnary(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error)
+	GetImageUnary(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error)
+	GetImagesUnary(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImagesResponse, error)
 }
 
 type imageClient struct {
@@ -62,8 +63,17 @@ func (x *imageGetImagesStreamClient) Recv() (*ImageResponse, error) {
 	return m, nil
 }
 
-func (c *imageClient) GetImagesUnary(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error) {
+func (c *imageClient) GetImageUnary(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error) {
 	out := new(ImageResponse)
+	err := c.cc.Invoke(ctx, "/images.Image/GetImageUnary", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imageClient) GetImagesUnary(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImagesResponse, error) {
+	out := new(ImagesResponse)
 	err := c.cc.Invoke(ctx, "/images.Image/GetImagesUnary", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -76,7 +86,8 @@ func (c *imageClient) GetImagesUnary(ctx context.Context, in *ImageRequest, opts
 // for forward compatibility
 type ImageServer interface {
 	GetImagesStream(*ImageRequest, Image_GetImagesStreamServer) error
-	GetImagesUnary(context.Context, *ImageRequest) (*ImageResponse, error)
+	GetImageUnary(context.Context, *ImageRequest) (*ImageResponse, error)
+	GetImagesUnary(context.Context, *ImageRequest) (*ImagesResponse, error)
 	mustEmbedUnimplementedImageServer()
 }
 
@@ -87,7 +98,10 @@ type UnimplementedImageServer struct {
 func (UnimplementedImageServer) GetImagesStream(*ImageRequest, Image_GetImagesStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetImagesStream not implemented")
 }
-func (UnimplementedImageServer) GetImagesUnary(context.Context, *ImageRequest) (*ImageResponse, error) {
+func (UnimplementedImageServer) GetImageUnary(context.Context, *ImageRequest) (*ImageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetImageUnary not implemented")
+}
+func (UnimplementedImageServer) GetImagesUnary(context.Context, *ImageRequest) (*ImagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetImagesUnary not implemented")
 }
 func (UnimplementedImageServer) mustEmbedUnimplementedImageServer() {}
@@ -124,6 +138,24 @@ func (x *imageGetImagesStreamServer) Send(m *ImageResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _Image_GetImageUnary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ImageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImageServer).GetImageUnary(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/images.Image/GetImageUnary",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImageServer).GetImageUnary(ctx, req.(*ImageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Image_GetImagesUnary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ImageRequest)
 	if err := dec(in); err != nil {
@@ -149,6 +181,10 @@ var Image_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "images.Image",
 	HandlerType: (*ImageServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetImageUnary",
+			Handler:    _Image_GetImageUnary_Handler,
+		},
 		{
 			MethodName: "GetImagesUnary",
 			Handler:    _Image_GetImagesUnary_Handler,

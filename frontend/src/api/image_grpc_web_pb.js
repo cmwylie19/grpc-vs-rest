@@ -151,8 +151,8 @@ proto.images.ImagePromiseClient.prototype.getImagesStream =
  *   !proto.images.ImageRequest,
  *   !proto.images.ImageResponse>}
  */
-const methodDescriptor_Image_GetImagesUnary = new grpc.web.MethodDescriptor(
-  '/images.Image/GetImagesUnary',
+const methodDescriptor_Image_GetImageUnary = new grpc.web.MethodDescriptor(
+  '/images.Image/GetImageUnary',
   grpc.web.MethodType.UNARY,
   proto.images.ImageRequest,
   proto.images.ImageResponse,
@@ -173,7 +173,7 @@ const methodDescriptor_Image_GetImagesUnary = new grpc.web.MethodDescriptor(
  *   !proto.images.ImageRequest,
  *   !proto.images.ImageResponse>}
  */
-const methodInfo_Image_GetImagesUnary = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_Image_GetImageUnary = new grpc.web.AbstractClientBase.MethodInfo(
   proto.images.ImageResponse,
   /**
    * @param {!proto.images.ImageRequest} request
@@ -196,6 +196,86 @@ const methodInfo_Image_GetImagesUnary = new grpc.web.AbstractClientBase.MethodIn
  * @return {!grpc.web.ClientReadableStream<!proto.images.ImageResponse>|undefined}
  *     The XHR Node Readable Stream
  */
+proto.images.ImageClient.prototype.getImageUnary =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/images.Image/GetImageUnary',
+      request,
+      metadata || {},
+      methodDescriptor_Image_GetImageUnary,
+      callback);
+};
+
+
+/**
+ * @param {!proto.images.ImageRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.images.ImageResponse>}
+ *     Promise that resolves to the response
+ */
+proto.images.ImagePromiseClient.prototype.getImageUnary =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/images.Image/GetImageUnary',
+      request,
+      metadata || {},
+      methodDescriptor_Image_GetImageUnary);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.images.ImageRequest,
+ *   !proto.images.ImagesResponse>}
+ */
+const methodDescriptor_Image_GetImagesUnary = new grpc.web.MethodDescriptor(
+  '/images.Image/GetImagesUnary',
+  grpc.web.MethodType.UNARY,
+  proto.images.ImageRequest,
+  proto.images.ImagesResponse,
+  /**
+   * @param {!proto.images.ImageRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.images.ImagesResponse.deserializeBinary
+);
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.images.ImageRequest,
+ *   !proto.images.ImagesResponse>}
+ */
+const methodInfo_Image_GetImagesUnary = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.images.ImagesResponse,
+  /**
+   * @param {!proto.images.ImageRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.images.ImagesResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.images.ImageRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.images.ImagesResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.images.ImagesResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
 proto.images.ImageClient.prototype.getImagesUnary =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
@@ -212,7 +292,7 @@ proto.images.ImageClient.prototype.getImagesUnary =
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.images.ImageResponse>}
+ * @return {!Promise<!proto.images.ImagesResponse>}
  *     Promise that resolves to the response
  */
 proto.images.ImagePromiseClient.prototype.getImagesUnary =
