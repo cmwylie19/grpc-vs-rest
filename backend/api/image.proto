@@ -1,0 +1,14 @@
+syntax = "proto3";
+package images;
+option go_package="/api";
+
+message ImageRequest {}
+message ImageResponse {
+    string source = 1;
+}
+
+service Image {
+    rpc GetImagesStream(ImageRequest) returns (stream ImageResponse) {};
+    rpc GetImagesUnary(ImageRequest) returns (ImageResponse) {}
+}
+
