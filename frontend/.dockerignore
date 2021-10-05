@@ -1,0 +1,8 @@
+# Ignore the following files/directories for this container
+k8s/
+.scannerwork/
+coverage/
+cypress/
+.gitignore
+cypress.json
+yarn.lock

@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend
+    version: v1
+  name: frontend
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      name: http
+  selector:
+    app: frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+    version: v1
+  name: frontend
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+      version: v1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+        version: v1
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      serviceAccountName: frontend
+      containers:
+        - image: docker.io/cmwylie19/grpc-web-frontend:latest
+          name: frontend
+          env:
+            - name: REACT_APP_ENV
+              value: prod
+            - name: REACT_APP_GATEWAY_URL
+              value: freshlist.us
+          ports:
+            - containerPort: 80
+              name: http
+          imagePullPolicy: Always
+          # resources:
+          #   limits:
+          #     cpu: 1
+          #     memory: 200m
+          #   requests:
+          #     memory: 100m
+          #     cpu: 500m
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: frontend

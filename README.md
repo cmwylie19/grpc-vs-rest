@@ -76,3 +76,13 @@ go run main.go
 
 ### Pipeline
 The pipeline consists of multiple jobs. The expectation is the the code pushed into the pipeline will be tested and errors will be detected before going to prod. It is extremely important to test code locally before pushing code into the pipeline to make sure all tests are passing and that any new features are well tested. Pll Requests will not be accepted if they fail the pipeline.
+
+
+  # - match:
+  #   - uri:
+  #       prefix: /com.example.grpc.EchoService/
+  #   route:
+  #   - destination:
+  #       host: echo-server
+
+# https://medium.com/swlh/building-a-realtime-dashboard-with-reactjs-go-grpc-and-envoy-7be155dfabfb
