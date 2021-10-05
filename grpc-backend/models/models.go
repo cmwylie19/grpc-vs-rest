@@ -91,7 +91,34 @@ func (s *Server) StoreImage(ctx context.Context, in *api.StoreImageRequest) (*ap
 	}, nil
 }
 
-// func(s *Server) GetImagesStream(ctx context.Context,)
+func (s *Server) GetImageUnary(ctx context.Context, req *api.ImageRequest) (*api.ImageResponse, error) {
+	img, err1 := GetImage("archie")
+	if err1 != nil {
+		log.Println("Error getting image: ", err1)
+		return nil, err1
+	}
+
+	return &api.ImageResponse{
+		Source: img.Source,
+	}, nil
+}
+func (s *Server) GetImagesUnary(ctx context.Context, req *api.ImageRequest) (*api.ImagesResponse, error) {
+	var imagesList []*api.ImageResponse
+	img, err1 := GetImage("archie")
+	if err1 != nil {
+		log.Println("Error getting image: ", err1)
+		return nil, err1
+	}
+	for x := 0; x < 60; x++ {
+		imagesList = append(imagesList, &api.ImageResponse{
+			Source: img.Source,
+		})
+	}
+
+	return &api.ImagesResponse{
+		ImageResponse: imagesList,
+	}, nil
+}
 func CreateImage(image Image) error {
 	client, err := helpers.GetMongoClient()
 	if err != nil {

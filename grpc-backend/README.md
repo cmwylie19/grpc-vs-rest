@@ -26,7 +26,7 @@ protoc api/image.proto --js_out=import_style=commonjs,binary:../frontend/src --g
 ```
 grpcurl -plaintext localhost:8081 list
 
- grpcurl -plaintext localhost:8081 describe images.Image
+ grpcurl -plaintext localhost:8080 describe images.Image
 images.Image is a service:
 service Image {
   rpc GetImageUnary ( .images.ImageRequest ) returns ( .images.ImageResponse );
@@ -39,9 +39,11 @@ grpcurl -plaintext localhost:8081 images.Image/HealthCheck
 
 grpcurl -plaintext localhost:8081 images.Image/GetImagesStream
 
+grpcurl -plaintext localhost:8081 images.Image/GetImagesUnary
+
 ```
 
 ## Build
 ```
-docker build -t docker.io/cmwylie19/image:latest .; docker push docker.io/cmwylie19/image:latest
+docker build -t docker.io/cmwylie19/image:latest .; docker push docker.io/cmwylie19/image:latest; k rollout restart deploy/image
 ```

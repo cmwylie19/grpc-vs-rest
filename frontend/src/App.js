@@ -17,20 +17,46 @@ enableDevTools([client]);
 const App = () => {
   // hold file in state
   const [file, setFile] = useState("");
-  const [files, setFiles] = useState([]);
+  const [filesStream, setFilesStream] = useState([]);
+  const [filesUnary, setFilesUnary] = useState([]);
   const [streamTime, setStreamTime] = useState();
+  const [unaryTime, setUnaryTime] = useState();
   const getHealthCheck = () => {
     const healthCheck = new HealthCheckRequest();
   };
 
-  const getImages = () => {
+  const getImageUnary = () => {
+    setUnaryTime(0);
+    setFilesUnary([]);
+    const imageRequest = new ImageRequest();
+    let startTime = performance.now();
+    for (let x = 0; x < 60; x++) {
+      client.getImageUnary(imageRequest, null, (err, response) => {
+        if (err) {
+          console.log("getImageUnary: " + JSON.stringify(err, undefined, 2));
+          return;
+        }
+        var res = response.toObject();
+        console.log("getImageUnary: " + JSON.stringify(res, undefined, 2));
+        setFilesUnary((filesUnary) => [...filesUnary, response.getSource()]);
+        if (x == 59) {
+          let endTime = performance.now();
+          setUnaryTime((endTime - startTime) / 1000);
+        }
+        console.log("Images Unary: " + res.ok);
+      });
+    }
+  };
+  const getImagesStream = () => {
+    setStreamTime(0);
+    setFilesStream([]);
     const imageRequest = new ImageRequest();
     let stream = client.getImagesStream(imageRequest, {});
-    var startTime = performance.now();
+    let startTime = performance.now();
 
     stream.on("data", (data) => {
       console.log("GOT DATA: " + data.getSource());
-      setFiles((files) => [...files, data.getSource()]);
+      setFilesStream((filesStream) => [...filesStream, data.getSource()]);
     });
     stream.on("status", function (status) {
       console.log(status.code);
@@ -38,7 +64,7 @@ const App = () => {
       console.log(status.metadata);
     });
     stream.on("end", (end) => {
-      var endTime = performance.now();
+      let endTime = performance.now();
       console.log("End stream");
       setStreamTime((endTime - startTime) / 1000);
       console.log(`Call to getImages took ${endTime - startTime} milliseconds`);
@@ -80,9 +106,9 @@ const App = () => {
     });
   };
 
-  useEffect(() => {
-    getImages();
-  }, []);
+  // useEffect(() => {
+  //   return Promise.all([getImagesStream(),getImageUnary()])
+  // }, []);
   return (
     <div>
       <img src={file} alt="loadme" height="40px" />
@@ -92,11 +118,24 @@ const App = () => {
         name="imageFile"
         onChange={(e) => imageUpload(e)}
       />
-      Length: {files.length} Time: {streamTime}
       <br />
       <b>gRPC Server Streaming</b>
       <br />
-      {files.map((img) => (
+      <button onClick={() => getImagesStream()}>Start test</button>
+      <br />
+      Length: {filesStream.length} Time: {streamTime}
+      <br />
+      {filesStream.map((img) => (
+        <img src={img} height="40px" />
+      ))}
+      <br />
+      <b>gRPC Unary</b>
+      <br />
+      <button onClick={() => getImageUnary()}>Start test</button>
+      <br />
+      Length: {filesUnary.length} Time: {unaryTime}
+      <br />
+      {filesUnary.map((img) => (
         <img src={img} height="40px" />
       ))}
     </div>
