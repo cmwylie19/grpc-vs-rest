@@ -36,4 +36,12 @@ service Image {
 }
 
 grpcurl -plaintext localhost:8081 images.Image/HealthCheck
+
+grpcurl -plaintext localhost:8081 images.Image/GetImagesStream
+
+```
+
+## Build
+```
+docker build -t docker.io/cmwylie19/image:latest .; docker push docker.io/cmwylie19/image:latest
 ```
