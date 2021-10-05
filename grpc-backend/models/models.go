@@ -91,6 +91,7 @@ func (s *Server) StoreImage(ctx context.Context, in *api.StoreImageRequest) (*ap
 	}, nil
 }
 
+// func(s *Server) GetImagesStream(ctx context.Context,)
 func CreateImage(image Image) error {
 	client, err := helpers.GetMongoClient()
 	if err != nil {
