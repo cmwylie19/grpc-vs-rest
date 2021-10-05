@@ -12,6 +12,17 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
+  name: rest-image
+spec:
+  host: rest-image
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
   name: frontend
 spec:
   host: frontend
@@ -49,6 +60,15 @@ spec:
         host: frontend
         port:
           number: 80
+        subset: v1
+  - match:
+    - uri:
+        prefix: /rest
+    route:
+    - destination:
+        host: rest-image
+        port:
+          number: 8080
         subset: v1
   - route:
     - destination:

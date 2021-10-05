@@ -5,6 +5,7 @@ import {
   ImageRequest,
   StoreImageRequest,
 } from "./api/image_pb";
+import axios from 'axios'
 
 const gateway_url = process.env.REACT_APP_GATEWAY_URL;
 const client = new ImageClient(
@@ -19,11 +20,30 @@ const App = () => {
   const [file, setFile] = useState("");
   const [filesStream, setFilesStream] = useState([]);
   const [filesUnary, setFilesUnary] = useState([]);
+  const [filesRest, setFilesRest] = useState([])
   const [streamTime, setStreamTime] = useState();
+  const [restTime, setRestTime] = useState()
   const [unaryTime, setUnaryTime] = useState();
   const getHealthCheck = () => {
     const healthCheck = new HealthCheckRequest();
   };
+
+  const getImagesRest = () => {
+    setRestTime(0)
+    setFilesRest([])
+    let startTime = performance.now();
+    for(let x=0;x<60;x++) {
+      axios.get(`${window.location.protocol}//freshlist.us/rest/img/get`).then(response=>{
+        console.log(`Rest Response: `+JSON.stringify(response.data))
+        setFilesRest((filesRest) => [...filesRest, response.data.source]);
+        if (x == 59) {
+          let endTime = performance.now();
+          setRestTime((endTime - startTime) / 1000);
+        }
+      })
+    }
+  }
+
 
   const getImageUnary = () => {
     setUnaryTime(0);
@@ -82,15 +102,20 @@ const App = () => {
 
       storeImageRequest.setName(file.name);
       storeImageRequest.setSource(base64);
-
+      // rest StoreImage
+      axios.post(`${window.location.protocol}//freshlist.us/rest/img/create`,{
+        name: file.name,
+        source: base64
+      }).then(response=>console.log(`CREATE IMAGE: ${response.data}`))
+      // gRPC storeImage
       client.storeImage(storeImageRequest, null, (err, response) => {
         if (err) {
-          alert(JSON.stringify(err, undefined, 2));
+          console.log(JSON.stringify(err, undefined, 2));
           return;
         }
 
         var res = response.toObject();
-        alert(res.ok);
+        console.log("storeImage res.ok: "+res.ok);
       });
       console.debug("file stored", base64);
     });
@@ -111,14 +136,14 @@ const App = () => {
   // }, []);
   return (
     <div>
-      <img src={file} alt="loadme" height="40px" />
+      {/* <img src={file} alt="loadme" height="40px" />
       <input
         type="file"
         id="imageFile"
         name="imageFile"
         onChange={(e) => imageUpload(e)}
       />
-      <br />
+      <br /> */}
       <b>gRPC Server Streaming</b>
       <br />
       <button onClick={() => getImagesStream()}>Start test</button>
@@ -136,6 +161,16 @@ const App = () => {
       Length: {filesUnary.length} Time: {unaryTime}
       <br />
       {filesUnary.map((img) => (
+        <img src={img} height="40px" />
+      ))}
+      <br />
+      <b>Rest Promise.All</b>
+      <br />
+      <button onClick={() => getImagesRest()}>Start test</button>
+      <br />
+      Length: {filesRest.length} Time: {restTime}
+      <br />
+      {filesRest.map((img) => (
         <img src={img} height="40px" />
       ))}
     </div>
