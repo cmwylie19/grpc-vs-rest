@@ -6,6 +6,7 @@ import {
   StoreImageRequest,
 } from "./api/image_pb";
 import axios from 'axios'
+import "./App.css"
 
 const gateway_url = process.env.REACT_APP_GATEWAY_URL;
 const client = new ImageClient(
@@ -134,8 +135,16 @@ const App = () => {
   // useEffect(() => {
   //   return Promise.all([getImagesStream(),getImageUnary()])
   // }, []);
+  const buttonClass = {
+    borderRadius:"15px",
+    boxShadow: "0 1px 1px 1px #676767",
+    color:"red",
+    fontWeight: 600,
+    padding: "5x",
+    backgroundColor: "white"
+  }
   return (
-    <div>
+    <div class="root">
       {/* <img src={file} alt="loadme" height="40px" />
       <input
         type="file"
@@ -146,7 +155,7 @@ const App = () => {
       <br /> */}
       <b>gRPC Server Streaming</b>
       <br />
-      <button onClick={() => getImagesStream()}>Start test</button>
+      <button style={buttonClass}  onClick={() => getImagesStream()}>Start test</button>
       <br />
       Length: {filesStream.length} Time: {streamTime}
       <br />
@@ -156,7 +165,7 @@ const App = () => {
       <br />
       <b>gRPC Unary</b>
       <br />
-      <button onClick={() => getImageUnary()}>Start test</button>
+      <button style={buttonClass}  onClick={() => getImageUnary()}>Start test</button>
       <br />
       Length: {filesUnary.length} Time: {unaryTime}
       <br />
@@ -166,7 +175,7 @@ const App = () => {
       <br />
       <b>Rest Promise.All</b>
       <br />
-      <button onClick={() => getImagesRest()}>Start test</button>
+      <button style={buttonClass}  onClick={() => getImagesRest()}>Start test</button>
       <br />
       Length: {filesRest.length} Time: {restTime}
       <br />
