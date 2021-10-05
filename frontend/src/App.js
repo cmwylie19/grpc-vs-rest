@@ -24,9 +24,11 @@ const App = () => {
   const getImages = () => {
     const imageRequest = new ImageRequest()
     let stream = client.getImagesStream(imageRequest, {})
+    var startTime = performance.now()
+   
     stream.on("data", data => {
-        alert(data.getSource())
-        setFiles([...files, data.getSource()])
+        console.log("GOT DATA: "+data.getSource())
+        setFiles(files=>[...files, data.getSource()])
     })
     stream.on('status', function(status) {
       console.log(status.code);
@@ -34,7 +36,9 @@ const App = () => {
       console.log(status.metadata);
     });
     stream.on("end",end =>{
+      var endTime = performance.now()
       console.log("End stream")
+      console.log(`Call to getImages took ${endTime - startTime} milliseconds`)
     })
   }
   // Upload Image and save to state
@@ -81,13 +85,17 @@ const App = () => {
   return (
     <div>
       <img src={file} alt="loadme" height="40px" />
-      {files.map(img=><img src={img} height="40px" />)}
+ 
       <input
         type="file"
         id="imageFile"
         name="imageFile"
         onChange={(e) => imageUpload(e)}
       />
+      {files.length}
+      <br />
+      <b>gRPC Server Streaming</b><br />
+      {files.map(img=><img src={img} height="40px" />)}
     </div>
   );
 };
