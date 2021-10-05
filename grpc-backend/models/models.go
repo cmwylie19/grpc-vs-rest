@@ -57,12 +57,13 @@ func GetImage(name string) (Image, error) {
 }
 
 func (s *Server) GetImagesStream(req *api.ImageRequest, stream api.Image_GetImagesStreamServer) error {
+	img, err1 := GetImage("archie")
+	if err1 != nil {
+		log.Println("Error getting image: ", err1)
+		return err1
+	}
 	for x := 0; x < 60; x++ {
-		img, err1 := GetImage("archie")
-		if err1 != nil {
-			log.Println("Error getting image: ", err1)
-			return err1
-		}
+
 		res := &api.ImageResponse{
 			Source: img.Source,
 		}
