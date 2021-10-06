@@ -1,0 +1,6 @@
+  # - match:
+  #   - uri:
+  #       prefix: /com.example.grpc.EchoService/
+  #   route:
+  #   - destination:
+  #       host: echo-server

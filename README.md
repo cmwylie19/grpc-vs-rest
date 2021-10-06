@@ -43,13 +43,4 @@ _The following assets are required locally to run this application._
 
 - Node v14
 - Go 1.16
-- mongo 5.0.2
-
-
-
-  # - match:
-  #   - uri:
-  #       prefix: /com.example.grpc.EchoService/
-  #   route:
-  #   - destination:
-  #       host: echo-server
+- mongo 5.0.2 (version is flexible)
