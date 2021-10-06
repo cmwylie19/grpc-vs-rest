@@ -5,7 +5,8 @@ import {
   ImageRequest,
   StoreImageRequest,
 } from "./api/image_pb";
-import axios from 'axios'
+import axios from "axios";
+import "./App.css";
 
 const gateway_url = process.env.REACT_APP_GATEWAY_URL;
 const client = new ImageClient(
@@ -20,30 +21,31 @@ const App = () => {
   const [file, setFile] = useState("");
   const [filesStream, setFilesStream] = useState([]);
   const [filesUnary, setFilesUnary] = useState([]);
-  const [filesRest, setFilesRest] = useState([])
+  const [filesRest, setFilesRest] = useState([]);
   const [streamTime, setStreamTime] = useState();
-  const [restTime, setRestTime] = useState()
+  const [restTime, setRestTime] = useState();
   const [unaryTime, setUnaryTime] = useState();
   const getHealthCheck = () => {
     const healthCheck = new HealthCheckRequest();
   };
 
   const getImagesRest = () => {
-    setRestTime(0)
-    setFilesRest([])
+    setRestTime(0);
+    setFilesRest([]);
     let startTime = performance.now();
-    for(let x=0;x<60;x++) {
-      axios.get(`${window.location.protocol}//freshlist.us/rest/img/get`).then(response=>{
-        console.log(`Rest Response: `+JSON.stringify(response.data))
-        setFilesRest((filesRest) => [...filesRest, response.data.source]);
-        if (x == 59) {
-          let endTime = performance.now();
-          setRestTime((endTime - startTime) / 1000);
-        }
-      })
+    for (let x = 0; x < 60; x++) {
+      axios
+        .get(`${window.location.protocol}//freshlist.us/rest/img/get`)
+        .then((response) => {
+          console.log(`Rest Response: ` + JSON.stringify(response.data));
+          setFilesRest((filesRest) => [...filesRest, response.data.source]);
+          if (x == 59) {
+            let endTime = performance.now();
+            setRestTime((endTime - startTime) / 1000);
+          }
+        });
     }
-  }
-
+  };
 
   const getImageUnary = () => {
     setUnaryTime(0);
@@ -103,10 +105,12 @@ const App = () => {
       storeImageRequest.setName(file.name);
       storeImageRequest.setSource(base64);
       // rest StoreImage
-      axios.post(`${window.location.protocol}//freshlist.us/rest/img/create`,{
-        name: file.name,
-        source: base64
-      }).then(response=>console.log(`CREATE IMAGE: ${response.data}`))
+      axios
+        .post(`${window.location.protocol}//freshlist.us/rest/img/create`, {
+          name: file.name,
+          source: base64,
+        })
+        .then((response) => console.log(`CREATE IMAGE: ${response.data}`));
       // gRPC storeImage
       client.storeImage(storeImageRequest, null, (err, response) => {
         if (err) {
@@ -115,7 +119,7 @@ const App = () => {
         }
 
         var res = response.toObject();
-        console.log("storeImage res.ok: "+res.ok);
+        console.log("storeImage res.ok: " + res.ok);
       });
       console.debug("file stored", base64);
     });
@@ -134,8 +138,16 @@ const App = () => {
   // useEffect(() => {
   //   return Promise.all([getImagesStream(),getImageUnary()])
   // }, []);
+  const buttonClass = {
+    borderRadius: "15px",
+    boxShadow: "0 1px 1px 1px #676767",
+    color: "red",
+    fontWeight: 600,
+    padding: "5x",
+    backgroundColor: "white",
+  };
   return (
-    <div>
+    <div class="root">
       {/* <img src={file} alt="loadme" height="40px" />
       <input
         type="file"
@@ -146,7 +158,9 @@ const App = () => {
       <br /> */}
       <b>gRPC Server Streaming</b>
       <br />
-      <button onClick={() => getImagesStream()}>Start test</button>
+      <button style={buttonClass} onClick={() => getImagesStream()}>
+        Start test
+      </button>
       <br />
       Length: {filesStream.length} Time: {streamTime}
       <br />
@@ -156,7 +170,9 @@ const App = () => {
       <br />
       <b>gRPC Unary</b>
       <br />
-      <button onClick={() => getImageUnary()}>Start test</button>
+      <button style={buttonClass} onClick={() => getImageUnary()}>
+        Start test
+      </button>
       <br />
       Length: {filesUnary.length} Time: {unaryTime}
       <br />
@@ -166,7 +182,9 @@ const App = () => {
       <br />
       <b>Rest Promise.All</b>
       <br />
-      <button onClick={() => getImagesRest()}>Start test</button>
+      <button style={buttonClass} onClick={() => getImagesRest()}>
+        Start test
+      </button>
       <br />
       Length: {filesRest.length} Time: {restTime}
       <br />
