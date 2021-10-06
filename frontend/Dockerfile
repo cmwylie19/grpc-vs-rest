@@ -1,7 +1,7 @@
 # Frontend UI running in NGINX
 FROM node:14 AS builder
-LABEL description="UI for freshlist-v2" \
-      maintainer="Freshlist Developers <contact@freshlist.us>"
+LABEL description="UI for gRPC-vs-rest" \
+      maintainer="Casey Wylie <casewylie@gmail.com>"
 # Set working directory
 WORKDIR /app
 # Copy all files from current directory to working dir in image

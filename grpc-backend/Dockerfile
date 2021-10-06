@@ -1,7 +1,7 @@
 # Auth Service
 FROM golang:latest
-LABEL description="Auth service for freshlist" \
-      maintainer="Freshlist Developers contact@freshlist.us"
+LABEL description="gRPC Image Service for gRPC-vs-rest" \
+      maintainer="Casey Wylie <casewylie@gmail.com>"
 ENV LogLevel "info"
 WORKDIR /go/src/app
 ADD . .
