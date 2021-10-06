@@ -55,6 +55,10 @@ spec:
         prefix: /static
     - uri:
         prefix: /sockjs-node
+    - uri:
+        exact: /service-worker.js
+    - uri:
+        exact: /index.html
     route:
     - destination:
         host: frontend
