@@ -1,32 +1,17 @@
 ## gRPC vs Rest
-
+This is a simple application that requests an image from two distinc backends with two distinct databases. 
 You can view the site [live](https://freshlist.us) to view the code running in production.
+
+**Screenshot**
+![App](app.png)
+
 
 At this moment, the project is very young, and not finished. The production site will be changing rapidly as development ensues.
 
-<!-- ### Markdown
+### Markdown
+The application is running in Istio. We are using the envoy proxy to translate the gRPC streaming request to the frontend. `VirtualService` configuration will be seen at `vs-default.yaml` in the root folder. The `VirtualService` contains a frontend, an http-backend, and a catch all grpc-backend.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/). -->
+![Architecture](docs/architecture.png)
 
 ### Contributors
 
