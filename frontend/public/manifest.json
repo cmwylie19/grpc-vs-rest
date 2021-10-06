@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "gRPC vs Rest",
+  "name": "gRPC vs Rest",
   "icons": [
     {
       "src": "favicon.ico",
