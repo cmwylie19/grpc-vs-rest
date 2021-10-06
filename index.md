@@ -14,7 +14,7 @@ The application is running in Istio. We are using the envoy proxy to translate t
 ![Architecture](docs/architecture.png)
 
 ### VirtualService
-The VirtualService responsible for translating gRPC streams to the frontend can be seen below. The frontend is a react app, the two backends are go apps.
+The VirtualService responsible for translating gRPC streams to the frontend can be seen below. The frontend is a react app, the two backends are go apps (image and rest-image).
 
 **default virtual service**
 ```
