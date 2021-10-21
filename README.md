@@ -9,9 +9,8 @@
 * [Pipeline](#pipeline)
 
 ## Preview App
+Go to the app's [website](https://cmwylie19.github.io/grpc-vs-rest/).
 
-
-View the application running [live](https://freshlist.us).
 
 This is a simple application that requests an image from two distinc backends with two distinct databases. 
 
