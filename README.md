@@ -10,7 +10,6 @@
 
 ## Preview App
 
-Go to the app's [website](https://cmwylie19.github.io/grpc-vs-rest/).
 
 View the application running [live](https://freshlist.us).
 
